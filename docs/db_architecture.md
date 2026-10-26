@@ -2,6 +2,10 @@
 
 This document outlines the database architecture for the SnipBase application.
 
+The schema is initialized by [`db-env/database/init.sql`](../db-env/database/init.sql).
+UUID values and `created_at` timestamps are supplied by the application; the
+database does not currently define defaults for them.
+
 ## Tables
 
 ### Snippets managing tables
@@ -16,11 +20,11 @@ This document outlines the database architecture for the SnipBase application.
 - `public` (BOOLEAN DEFAULT FALSE): boolean indicating whether the snippet is public or private (default false)
 - `created_at` (TIMESTAMP WITH TIME ZONE): timestamp of when the snippet was created
 
-#### tags
+#### Tags
 
 - `id` (Primary Key, UUID): unique identifier for each tag
-- `name` (VARCHAR(255), NOT NULL): name of the tag (e.g., `axum`, `docker`, `async`)
-- `color` (VARCHAR(7), optional): Hex color code for UI badges (e.g., `#FF5733`)
+- `name` (VARCHAR(255), NOT NULL, UNIQUE): name of the tag (e.g., `axum`, `docker`, `async`)
+- `color` (VARCHAR(7), optional, DEFAULT `#6366f1`): Hex color code for UI badges (e.g., `#FF5733`)
 
 #### snippet_tags
 

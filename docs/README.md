@@ -31,9 +31,13 @@ Planned capabilities include:
 │   └── src/
 ├── frontend/         # Web frontend
 │   └── public/
+├── db-env/            # PostgreSQL Docker Compose configuration and schema
+│   ├── docker-compose.yml
+│   └── database/
 ├── test/              # Tests
 └── docs/
-    └── README.md
+    ├── README.md
+    └── db_architecture.md
 ```
 
 ## Getting Started
@@ -56,8 +60,8 @@ The planned development environment requires:
 git clone <repository-url>
 cd SnipBase
 
-# Start the PostgreSQL service
-docker compose up -d
+# Start the PostgreSQL service from the repository root
+docker compose -f db-env/docker-compose.yml up -d
 
 # Run the backend
 cd backend
@@ -68,7 +72,17 @@ Frontend startup instructions will be documented once the frontend build and ser
 
 ## Configuration
 
-Environment variables and database configuration will be documented here once the PostgreSQL container and backend connection settings are finalized.
+The development PostgreSQL service uses the following connection settings:
+
+- Host: `localhost`
+- Port: `5439`
+- Database: `snipbase`
+- User: `tommaso`
+- Password: `tommaso`
+
+The schema is initialized from [`db-env/database/init.sql`](../db-env/database/init.sql)
+when the PostgreSQL data volume is created for the first time. The database
+architecture is documented in [`db_architecture.md`](./db_architecture.md).
 
 ## Development
 
@@ -81,8 +95,8 @@ Contributions and improvements are welcome while the project is being shaped. Be
 
 ## Roadmap
 
-- [ ] Define the snippet data model
-- [ ] Configure the PostgreSQL Docker service
+- [x] Define the snippet data model
+- [x] Configure the PostgreSQL Docker service
 - [ ] Implement the Rust backend API
 - [ ] Build the snippet management interface
 - [ ] Add search, filtering, and categorization

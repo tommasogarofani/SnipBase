@@ -1,16 +1,17 @@
 services:
   postgres:
     image: postgres:latest
-    container_name: postgres_db
+    container_name: snipbase
     restart: unless-stopped
     environment:
       POSTGRES_USER: tommaso
       POSTGRES_PASSWORD: tommaso
       POSTGRES_DB: snipbase
     ports:
-      - "5434:5432"
+      - "5439:5432"
     volumes:
       - pgdata:/var/lib/postgresql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
 volumes:
   pgdata:
