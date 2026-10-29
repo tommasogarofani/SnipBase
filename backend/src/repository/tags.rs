@@ -27,8 +27,8 @@ impl RepoTag {
         pub async fn get_all(pool: &PgPool) -> Result<Vec<Self>, sqlx::Error> {
                 let db_tags: Vec<DbTag> = sqlx::query_as::<_, DbTag>(
                          r#"
-                        SELECT id, title, description, content, language, public, created_at
-                        FROM Tags
+                        SELECT id, name, color
+                        FROM tags
                         "#,)
                         .fetch_all(pool)
                         .await?;
@@ -44,9 +44,9 @@ impl RepoTag {
 pub async fn add(pool: &PgPool, new_tag: RepoTag) -> Result<Self, sqlx::Error> {
         let db_tag = sqlx::query_as::<_, DbTag>(
             r#"
-            INSERT INTO Tags (title, description, content, language, public)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING id, title, description, content, language, public, created_at
+            INSERT INTO tags (name, color)
+            VALUES ($1, $2)
+            RETURNING name, color
             "#,
         )
         .bind(new_tag.name)
