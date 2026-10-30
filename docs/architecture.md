@@ -18,7 +18,7 @@ This document describes the backend architecture of **Snipbase**, developed in *
 
 ### `repository/`:
 
-    This is the only layer that communicates directly with Database. It executes SQL queries (e.g., inserting a snippet and linking tags in the snippet_tags junction table) and returns raw data as domain structs.
+    This is the only layer that communicates directly with Database. It executes SQL queries (e.g., inserting a snippet and linking tags in the snippet_tag junction table) and returns raw data as domain structs.
 
 ### `service/`:
 

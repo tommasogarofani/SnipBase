@@ -3,7 +3,7 @@ use sqlx::{FromRow, PgPool, Result};
 
 #[derive(Debug, FromRow)]
 pub struct DbSnippet {
-    pub id: i32,
+    pub id: i64,
     pub title: String,
     pub description: Option<String>,
     pub content: String,
@@ -38,7 +38,7 @@ impl RepoSnippet {
         let db_snippets: Vec<DbSnippet> = sqlx::query_as::<_, DbSnippet>(
             r#"
                         SELECT id, title, description, content, language, public, created_at
-                        FROM snippets
+                        FROM snippet
                         "#,
         )
         .fetch_all(pool)
@@ -50,12 +50,12 @@ impl RepoSnippet {
     }
 
     /// get_by_id requests a single snippet searching it by the id field
-    pub async fn get_by_id(pool: &PgPool, id: i32) -> Result<Self, sqlx::Error> {
+    pub async fn get_by_id(pool: &PgPool, id: i64) -> Result<Self, sqlx::Error> {
         let db_snippet: DbSnippet = sqlx::query_as::<_, DbSnippet>(
             r#"
                 SELECT id, title, description, content, language, public, created_at
-                FROM snippets
-                WHERE snippets.id = $1
+                FROM snippet
+                WHERE id = $1
                 "#,
         )
         .bind(id)
@@ -66,10 +66,10 @@ impl RepoSnippet {
     }
 
     /// add function adds a snippet in the db returning the id
-    pub async fn add(pool: &PgPool, new_snippet: RepoSnippet) -> Result<i32, sqlx::Error> {
+    pub async fn add(pool: &PgPool, new_snippet: RepoSnippet) -> Result<i64, sqlx::Error> {
         let id = sqlx::query_scalar(
             r#"
-            INSERT INTO snippets (title, description, content, language, public)
+            INSERT INTO snippet (title, description, content, language, public)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING id
             "#,
@@ -86,10 +86,10 @@ impl RepoSnippet {
     }
 
     /// edit function, modify an existing snippet
-    pub async fn edit(pool: &PgPool, id: i32, edited: RepoSnippet) -> Result<(), sqlx::Error> {
+    pub async fn edit(pool: &PgPool, id: i64, edited: RepoSnippet) -> Result<(), sqlx::Error> {
         sqlx::query(
             r#"
-            UPDATE snippets
+            UPDATE snippet
             SET title = $1, description = $2, content = $3, language = $4, public=$5
             WHERE id = $6
             "#,
@@ -106,11 +106,10 @@ impl RepoSnippet {
         Ok(())
     }
 
-    pub async fn delete(pool: &PgPool, id: i32) -> Result<(), sqlx::Error> {
+    pub async fn delete(pool: &PgPool, id: i64) -> Result<(), sqlx::Error> {
         sqlx::query(
             r#"
-                DELETE *
-                FROM snippet
+                DELETE FROM snippet
                 WHERE id = $1
         "#,
         )

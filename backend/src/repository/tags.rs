@@ -2,7 +2,7 @@ use sqlx::{FromRow, PgPool, Result};
 
 #[derive(Debug, FromRow)]
 pub struct DbTag {
-    pub id: i32,
+    pub id: i64,
     pub name: String,
     pub color: Option<String>,
 }
@@ -27,7 +27,7 @@ impl RepoTag {
         let db_tags: Vec<DbTag> = sqlx::query_as::<_, DbTag>(
             r#"
                         SELECT id, name, color
-                        FROM tags
+                        FROM tag
                         "#,
         )
         .fetch_all(pool)
@@ -41,7 +41,7 @@ impl RepoTag {
     pub async fn add(pool: &PgPool, new_tag: RepoTag) -> Result<Self, sqlx::Error> {
         let db_tag = sqlx::query_as::<_, DbTag>(
             r#"
-            INSERT INTO tags (name, color)
+            INSERT INTO tag (name, color)
             VALUES ($1, $2)
             RETURNING name, color
             "#,
