@@ -10,7 +10,6 @@ Definition of the RESTful endpoints exposed by Snipbase's Rust backend. Base pat
 
 - `GET /api/snippets`
   - Description: Returns a list of all snippets (with optional filters by tag or language).
-  - Response: `200 OK` (JSON array of snippets).
 
 - `GET /api/snippets/:id`
   - Description: Retrieves the details of a single snippet by ID.
@@ -20,7 +19,7 @@ Definition of the RESTful endpoints exposed by Snipbase's Rust backend. Base pat
 - `POST /api/snippets`
   - Description: Creates a new snippet and associates its tags (transactional many-to-many relationship management).
   - Request Body: `{ "title": "...", "description": "...", "content": "...", "language": "...", "tags": ["rust", "axum"] }`
-  - Response: `201 Created`
+  - Response: `id`
 
 #### Put
 
