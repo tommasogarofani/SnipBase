@@ -1,30 +1,55 @@
 # API Specification
 
-Definizione degli endpoint RESTful esposti dal backend Rust di Snipbase. Base path: `/api`
+Definition of the RESTful endpoints exposed by Snipbase's Rust backend. Base path: `/api`
 
 ## Endpoints
 
 ### Snippets
-- `GET /api/snippets`
-  - Descrizione: Restituisce la lista di tutti gli snippet (con eventuali filtri per tag o linguaggio).
-  - Risposta: `200 OK` (JSON array di snippet).
 
-- `POST /api/snippets`
-  - Descrizione: Crea un nuovo snippet e associa i relativi tag (gestione transazionale Many-to-Many).
-  - Request Body: `{ "title": "...", "description": "...", "content": "...", "language": "...", "tags": ["rust", "axum"] }`
-  - Risposta: `201 Created`
+#### Get
+
+- `GET /api/snippets`
+  - Description: Returns a list of all snippets (with optional filters by tag or language).
+  - Response: `200 OK` (JSON array of snippets).
 
 - `GET /api/snippets/:id`
-  - Descrizione: Recupera il dettaglio di un singolo snippet tramite ID.
+  - Description: Retrieves the details of a single snippet by ID.
+
+#### Post
+
+- `POST /api/snippets`
+  - Description: Creates a new snippet and associates its tags (transactional many-to-many relationship management).
+  - Request Body: `{ "title": "...", "description": "...", "content": "...", "language": "...", "tags": ["rust", "axum"] }`
+  - Response: `201 Created`
+
+#### Put
 
 - `PUT /api/snippets/:id`
-  - Descrizione: Aggiorna uno snippet esistente e i relativi tag.
+  - Description: Updates an existing snippet and its tags.
+
+#### Delete
 
 - `DELETE /api/snippets/:id`
-  - Descrizione: Elimina uno snippet.
+  - Description: Deletes a snippet.
 
 ### Tags
+
+#### Get
+
 - `GET /api/tags`
-  - Descrizione: Restituisce l'elenco di tutti i tag disponibili.
+  - Description: Returns a list of all available tags.
+
+#### Post
+
 - `POST /api/tags`
-  - Descrizione: Crea un nuovo tag.
+  - Description: Creates a new tag.
+
+#### Put
+
+- `PUT /api/tags/:id`
+  - Description: Updates an existing tag.
+
+#### Delete
+
+- `DELETE /api/tags/:id`
+  - Description: Deletes a tag.
