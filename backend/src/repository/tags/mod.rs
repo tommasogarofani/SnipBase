@@ -21,12 +21,12 @@ pub async fn get_all(pool: &PgPool) -> Result<Vec<RepoTag>, sqlx::Error> {
 }
 
 /// add create a new tag into the DB
-pub async fn add(pool: &PgPool, new_tag: RepoTag) -> Result<RepoTag, sqlx::Error> {
-    let db_tag = sqlx::query_as::<_, DbTag>(
+pub async fn add(pool: &PgPool, new_tag: RepoTag) -> Result<i64, sqlx::Error> {
+    let id = sqlx::query_scalar(
         r#"
             INSERT INTO tag (name, color)
             VALUES ($1, $2)
-            RETURNING name, color
+            RETURNING id
             "#,
     )
     .bind(new_tag.name)
@@ -34,14 +34,14 @@ pub async fn add(pool: &PgPool, new_tag: RepoTag) -> Result<RepoTag, sqlx::Error
     .fetch_one(pool)
     .await?;
 
-    Ok(RepoTag::from(db_tag))
+    Ok(id)
 }
 
 /// edit updates the fields of an exiting tag
-pub async fn update(pool: &PgPool, id: i64, edited_tag: RepoTag) -> Result<(), sqlx::Error> {
+pub async fn edit(pool: &PgPool, id: i64, edited_tag: RepoTag) -> Result<(), sqlx::Error> {
     sqlx::query(
         r#"
-            UPDATE tags
+            UPDATE tag
             SET name = $1, color = $2
             WHERE id = $3
             "#,
@@ -59,7 +59,7 @@ pub async fn update(pool: &PgPool, id: i64, edited_tag: RepoTag) -> Result<(), s
 pub async fn delete(pool: &PgPool, id: i64) -> Result<(), sqlx::Error> {
     sqlx::query(
         r#"
-                DELETE FROM tags
+                DELETE FROM tag
                 WHERE id = $1
         "#,
     )
