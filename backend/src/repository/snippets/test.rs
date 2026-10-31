@@ -27,7 +27,7 @@ async fn test_snippet_crud_flow() {
     let inserted_id = add(&pool, new_snippet).await;
     assert!(inserted_id.is_ok(), "Inserting failed");
     let id = inserted_id.unwrap();
-    assert!(id > 0, "L'ID restituito deve essere maggiore di 0");
+    assert!(id > 0, "ID must be greater than 0");
 
     // 3. get_by_id testing
     let fetched = get_by_id(&pool, id).await;
