@@ -1,5 +1,2 @@
-mod snippets;
-mod tags;
-
-pub use snippets::{DbSnippet, RepoSnippet};
-pub use tags::{DbTag, RepoTag};
+pub mod snippets;
+pub mod tags;
