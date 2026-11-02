@@ -1,5 +1,6 @@
 use super::*;
 use sqlx::PgPool;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 async fn setup_test_pool() -> PgPool {
     let database_url = std::env::var("DATABASE_URL")
@@ -13,7 +14,10 @@ async fn setup_test_pool() -> PgPool {
 #[tokio::test]
 async fn test_tag_crud_flow() {
     let pool = setup_test_pool().await;
-    let test_id = std::process::id();
+    let test_id = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect("System clock is before UNIX epoch")
+        .as_nanos();
 
     let new_tag = RepoTag {
         name: format!("test_tag_{test_id}"),

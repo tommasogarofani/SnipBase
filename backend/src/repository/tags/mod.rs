@@ -1,4 +1,4 @@
-mod models;
+pub mod models;
 use models::{DbTag, RepoTag};
 use sqlx::{PgPool, Result};
 #[cfg(test)]
